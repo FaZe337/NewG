@@ -62,3 +62,6 @@ public:
                 player->setCustomGlowRed();
             } */
         }
+    }
+};
+
