@@ -22,9 +22,6 @@ public:
                 continue;
             if (player->isVisible())
             }
-            
-            //if (player->isVisible()){
-
                 player->setCustomGlow();
                 player->setCustomGlowWhite();
 
