@@ -9,7 +9,13 @@ class Player
 private:
     int m_entityListIndex;
     float m_lastVisibleTime;
-    long m_basePointer = 0;
+
+public:
+    Player(int entityListIndex)
+    {
+        m_entityListIndex = entityListIndex;
+    }
+
     long getUnresolvedBasePointer()
     {
         long unresolvedBasePointer = offsets::REGION + offsets::ENTITY_LIST + ((m_entityListIndex + 1) << 5);
@@ -17,19 +23,8 @@ private:
     }
     long getBasePointer()
     {
-        if (m_basePointer == 0)
-            m_basePointer = mem::ReadLong(getUnresolvedBasePointer());
-        return m_basePointer;
-    }
-
-public:
-    Player(int entityListIndex)
-    {
-        m_entityListIndex = entityListIndex;
-    }
-    void markForPointerResolution()
-    {
-        m_basePointer = 0;
+        long basePointer = mem::ReadLong(getUnresolvedBasePointer());
+        return basePointer;
     }
     bool isDead()
     {
@@ -108,103 +103,6 @@ public:
         long ptrLong = basePointer + offsets::GLOW_ENABLE;
         mem::WriteInt(ptrLong, glowEnable);
     }
-
-    int getShieldValue(){
-        long basePointer = getBasePointer();
-        long shieldOffset = basePointer + 0x0170;
-        int result = mem::ReadInt(shieldOffset);
-        return result;
-    }
-
-    void setCustomGlow()
-    {
-        long basePointer = getBasePointer();
-        long glowDistance = basePointer + 0x3B4;
-        
-
-        long offset1 = basePointer + 0x2C4;
-        long offset2 = basePointer + 0x3c8;
-        long offset3 = basePointer + 0x3d0;
-
-
-        
-
-        mem::WriteInt(offset1, 1512990053);
-        mem::WriteInt(offset2, 1);
-        mem::WriteInt(offset3, 2);
-
-        mem::WriteFloat(glowDistance, 99999999.0f);
-
-    }
-
-
-    void setCustomGlowRed()
-    {
-        long basePointer = getBasePointer();
-
-        long redColor = basePointer + 0x1D0;
-        long greenColor = basePointer + 0x1D4;
-        long blueColor = basePointer + 0x1D8;
-
-        mem::WriteFloat(redColor, 255.0f);
-        mem::WriteFloat(greenColor, 0.0f);
-        mem::WriteFloat(blueColor, 0.0f);
-
-    }
-
-    void setCustomGlowGreen()
-    {
-        long basePointer = getBasePointer();
-
-        long redColor = basePointer + 0x1D0;
-        long greenColor = basePointer + 0x1D4;
-        long blueColor = basePointer + 0x1D8;
-
-
-        mem::WriteFloat(redColor, 0.0f);
-        mem::WriteFloat(greenColor, 100.0f);
-        mem::WriteFloat(blueColor, 0.0f);
-    }
-
-    void setCustomGlowWhite()
-    {
-        long basePointer = getBasePointer();
-
-        long redColor = basePointer + 0x1D0;
-        long greenColor = basePointer + 0x1D4;
-        long blueColor = basePointer + 0x1D8;
-
-        mem::WriteFloat(redColor, 255.0f);
-        mem::WriteFloat(greenColor, 255.0f);
-        mem::WriteFloat(blueColor, 255.0f);
-    }
-
-        void setCustomGlowBlue()
-        {
-            long basePointer = getBasePointer();
-
-            long redColor = basePointer + 0x1D0;
-            long greenColor = basePointer + 0x1D4;
-            long blueColor = basePointer + 0x1D8;
-
-            mem::WriteFloat(redColor, 0.0f);
-            mem::WriteFloat(greenColor, 117.0f);
-            mem::WriteFloat(blueColor, 209.0f);
-        }
-
-        void setCustomGlowPurple()
-        {
-            long basePointer = getBasePointer();
-
-            long redColor = basePointer + 0x1D0;
-            long greenColor = basePointer + 0x1D4;
-            long blueColor = basePointer + 0x1D8;
-
-            mem::WriteFloat(redColor, 126.0f);
-            mem::WriteFloat(greenColor, 0.0f);
-            mem::WriteFloat(blueColor, 255.0f);
-        }
-
     int getGlowThroughWall()
     {
         long basePointer = getBasePointer();
